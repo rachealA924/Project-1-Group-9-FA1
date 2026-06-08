@@ -113,7 +113,7 @@ class _EventCreatedScreenState extends State<EventCreatedScreen> with TickerProv
                           child: const Center(child: Icon(Icons.people_outline_rounded, color: AppColors.textMuted, size: 40)),
                         ),
                         const SizedBox(height: 12),
-                        const Text('Tech Innovations Summit\n2024', style: TextStyle(color: AppColors.textPrimary, fontSize: 17, fontWeight: FontWeight.w700, height: 1.3)),
+                        const Text('Tech Innovations Summit\n2026', style: TextStyle(color: AppColors.textPrimary, fontSize: 17, fontWeight: FontWeight.w700, height: 1.3)),
                         const SizedBox(height: 8),
                         Row(
                           children: const [
