@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'features/opportunities/opportunities_feed_screen.dart';
 import 'features/community/init.dart';
+import 'features/events/init.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -34,6 +35,7 @@ class _MainNavigationState extends State<MainNavigation> {
   final List<Widget> _screens = [
     const CommunitiesHubScreen(),
     const OpportunitiesFeedScreen(),
+    const EventDiscoveryScreen(),
   ];
 
   @override
@@ -47,6 +49,7 @@ class _MainNavigationState extends State<MainNavigation> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
           BottomNavigationBarItem(icon: Icon(Icons.work_outline), label: 'Opportunities'),
+          BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Events'),
         ],
       ),
     );
