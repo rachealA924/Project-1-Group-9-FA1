@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'features/opportunities/opportunities_feed_screen.dart';
-import 'features/opportunities/messages_screen.dart';
-import 'features/opportunities/profile_screen.dart';
 import 'features/community/init.dart';
 import 'features/events/init.dart';
-import 'features/home/splash_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -13,14 +11,25 @@ void main() {
 
 class AluConnectApp extends StatelessWidget {
   const AluConnectApp({super.key});
+=======
+import 'package:alu_connect/features/home/splash_screen.dart';
+
+void main() {
+  runApp(const ALUConnectApp());
+}
+
+class ALUConnectApp extends StatelessWidget {
+  const ALUConnectApp({super.key});
+>>>>>>> Home
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ALU Connect+',
       debugShowCheckedModeBanner: false,
+<<<<<<< HEAD
       theme: buildAppTheme(),
-      home: const SplashScreen(),
+      home: const MainNavigation(),
     );
   }
 }
@@ -39,8 +48,6 @@ class _MainNavigationState extends State<MainNavigation> {
     const CommunitiesHubScreen(),
     const OpportunitiesFeedScreen(),
     const EventDiscoveryScreen(),
-    const MessagesScreen(),
-    const ProfileScreen(),
   ];
 
   @override
@@ -50,18 +57,28 @@ class _MainNavigationState extends State<MainNavigation> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
-        backgroundColor: AppColors.surface,
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: AppColors.textMuted,
-        type: BottomNavigationBarType.fixed,
+        selectedItemColor: const Color(0xFFE94560),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.group_outlined), label: 'Community'),
+          BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
           BottomNavigationBarItem(icon: Icon(Icons.work_outline), label: 'Opportunities'),
-          BottomNavigationBarItem(icon: Icon(Icons.event_outlined), label: 'Events'),
-          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: 'Messages'),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Events'),
         ],
       ),
+=======
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF0D0F14),
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFFF5C842),
+          surface: Color(0xFF141720),
+          background: Color(0xFF0D0F14),
+        ),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Color(0xFFF5C842),
+        ),
+      ),
+      home: SplashScreen(),
+>>>>>>> Home
     );
   }
 }
