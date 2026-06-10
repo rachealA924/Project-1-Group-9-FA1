@@ -9,7 +9,7 @@ List<Opportunity> mockOpportunities = [
     organizer: 'Google',
     deadline: 'June 30, 2026',
     location: 'Remote',
-    imageUrl: 'https://via.placeholder.com/300x150',
+    imageUrl: 'https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=600',
   ),
   Opportunity(
     id: '2',
@@ -19,7 +19,7 @@ List<Opportunity> mockOpportunities = [
     organizer: 'ALU Innovation Hub',
     deadline: 'July 10, 2026',
     location: 'ALU Campus, Kigali',
-    imageUrl: 'https://via.placeholder.com/300x150',
+    imageUrl: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600',
   ),
   Opportunity(
     id: '3',
@@ -29,7 +29,7 @@ List<Opportunity> mockOpportunities = [
     organizer: 'ALU Student Council',
     deadline: 'July 5, 2026',
     location: 'ALU Campus',
-    imageUrl: 'https://via.placeholder.com/300x150',
+    imageUrl: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600',
   ),
   Opportunity(
     id: '4',
@@ -39,7 +39,7 @@ List<Opportunity> mockOpportunities = [
     organizer: 'Andela',
     deadline: 'June 25, 2026',
     location: 'Remote',
-    imageUrl: 'https://via.placeholder.com/300x150',
+    imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600',
   ),
   Opportunity(
     id: '5',
@@ -49,6 +49,6 @@ List<Opportunity> mockOpportunities = [
     organizer: 'ALU Venture Lab',
     deadline: 'July 20, 2026',
     location: 'ALU Campus, Kigali',
-    imageUrl: 'https://via.placeholder.com/300x150',
+    imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600',
   ),
 ];
