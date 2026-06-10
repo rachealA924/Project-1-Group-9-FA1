@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:alu_connect/features/home/app_router.dart';
 import 'package:alu_connect/features/home/login_screen.dart';
-import 'package:alu_connect/features/home/home_screen.dart';
+import 'package:alu_connect/main.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,13 +14,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
 
-  // Animation controllers
+  // ── Animation controllers ───────────────────────────────────
   late final AnimationController _logoController;
   late final AnimationController _textController;
   late final AnimationController _taglineController;
   late final AnimationController _barController;
 
-  // Animations
+  // ── Animations ──────────────────────────────────────────────
   late final Animation<double> _logoScale;
   late final Animation<double> _logoFade;
   late final Animation<double> _logoGlow;
@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
       statusBarIconBrightness: Brightness.light,
     ));
 
-    // Logo
+    // Logo: scale up + fade in (0 → 600ms)
     _logoController = AnimationController(
       vsync: this, duration: const Duration(milliseconds: 700));
     _logoScale = Tween<double>(begin: 0.6, end: 1.0).animate(
@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen>
     _logoGlow = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(parent: _logoController, curve: const Interval(0.4, 1.0)));
 
-    // App name
+    // App name: slide up + fade (400ms after logo starts)
     _textController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
     _textFade = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -58,13 +58,13 @@ class _SplashScreenState extends State<SplashScreen>
         begin: const Offset(0, 0.4), end: Offset.zero).animate(
         CurvedAnimation(parent: _textController, curve: Curves.easeOutCubic));
 
-    // Tagline
+    // Tagline: fade in after name
     _taglineController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 400));
     _taglineFade = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(parent: _taglineController, curve: Curves.easeIn));
 
-    // Loading bar
+    // Loading bar: fills from 0 → full (runs while checking auth)
     _barController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 1800));
     _barWidth = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -91,17 +91,20 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _checkAuthAndNavigate() async {
-    
+    // Wait for the loading bar to finish
     await _barController.forward();
     await Future.delayed(const Duration(milliseconds: 300));
 
     if (!mounted) return;
 
-    const isLoggedIn = false; 
+    // TODO: Replace with real auth check, e.g.:
+    // final user = FirebaseAuth.instance.currentUser;
+    // final isLoggedIn = user != null;
+    const isLoggedIn = false; // always show login for now
 
     Navigator.pushReplacement(
       context,
-      isLoggedIn ? revealRoute(const HomeScreen()) : fadeRoute(const LoginScreen()),
+      isLoggedIn ? revealRoute(MainNavigation()) : fadeRoute(const LoginScreen()),
     );
   }
 
@@ -123,7 +126,7 @@ class _SplashScreenState extends State<SplashScreen>
       body: Stack(
         children: [
 
-          // Background radial glow
+          // ── Background radial glow ──────────────────────────
           AnimatedBuilder(
             animation: _logoGlow,
             builder: (_, __) => Positioned(
@@ -144,7 +147,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ),
 
-          // Centered content
+          // ── Centered content ────────────────────────────────
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -215,7 +218,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ),
 
-          // Loading bar at bottom
+          // ── Loading bar at bottom ───────────────────────────
           Positioned(
             bottom: 60,
             left: 48,

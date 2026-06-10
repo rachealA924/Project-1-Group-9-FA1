@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:alu_connect/features/home/app_router.dart';
-import 'package:alu_connect/features/home/home_screen.dart';
+import 'package:alu_connect/main.dart';
 
 class OnboardingCampusScreen extends StatefulWidget {
   final List<String> interests;
@@ -16,7 +16,7 @@ class _OnboardingCampusScreenState extends State<OnboardingCampusScreen> {
   void _completeSetup() {
     Navigator.pushAndRemoveUntil(
       context,
-      revealRoute(HomeScreen()),
+      revealRoute(MainNavigation()),
       (route) => false,
     );
   }
