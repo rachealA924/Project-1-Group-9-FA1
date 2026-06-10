@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'data/opportunities_data.dart';
 import 'models/opportunity_model.dart';
 import 'opportunity_detail_screen.dart';
+import '../../theme/app_theme.dart';
 
 class OpportunitiesFeedScreen extends StatefulWidget {
   const OpportunitiesFeedScreen({super.key});
@@ -22,18 +23,25 @@ class _OpportunitiesFeedScreenState extends State<OpportunitiesFeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1A1A2E),
-        title: const Text('Opportunities', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        centerTitle: true,
+        backgroundColor: AppColors.background,
+        title: const Text('Opportunities', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 20)),
+        centerTitle: false,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search, color: AppColors.textPrimary),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Column(
         children: [
+          // Filter chips
           Container(
-            color: const Color(0xFF1A1A2E),
-            padding: const EdgeInsets.only(bottom: 12, left: 12, right: 12),
+            color: AppColors.background,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -41,15 +49,23 @@ class _OpportunitiesFeedScreenState extends State<OpportunitiesFeedScreen> {
                   final isSelected = selectedFilter == filter;
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
-                    child: ChoiceChip(
-                      label: Text(filter),
-                      selected: isSelected,
-                      onSelected: (_) => setState(() => selectedFilter = filter),
-                      selectedColor: const Color(0xFFE94560),
-                      backgroundColor: Colors.white24,
-                      labelStyle: TextStyle(
-                        color: isSelected ? Colors.white : Colors.white70,
-                        fontWeight: FontWeight.w600,
+                    child: GestureDetector(
+                      onTap: () => setState(() => selectedFilter = filter),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: isSelected ? AppColors.primary : AppColors.surfaceVariant,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: isSelected ? AppColors.primary : AppColors.border),
+                        ),
+                        child: Text(
+                          filter,
+                          style: TextStyle(
+                            color: isSelected ? AppColors.onPrimary : AppColors.textSecondary,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                     ),
                   );
@@ -57,11 +73,15 @@ class _OpportunitiesFeedScreenState extends State<OpportunitiesFeedScreen> {
               ),
             ),
           ),
+          const SizedBox(height: 8),
+          // List
           Expanded(
             child: filteredOpportunities.isEmpty
-                ? const Center(child: Text('No opportunities found.'))
+                ? const Center(
+                    child: Text('No opportunities found.', style: TextStyle(color: AppColors.textSecondary)),
+                  )
                 : ListView.builder(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     itemCount: filteredOpportunities.length,
                     itemBuilder: (context, index) {
                       final opp = filteredOpportunities[index];
@@ -69,9 +89,7 @@ class _OpportunitiesFeedScreenState extends State<OpportunitiesFeedScreen> {
                         opportunity: opp,
                         onTap: () => Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (_) => OpportunityDetailScreen(opportunity: opp),
-                          ),
+                          MaterialPageRoute(builder: (_) => OpportunityDetailScreen(opportunity: opp)),
                         ),
                       );
                     },
@@ -95,8 +113,8 @@ class _OpportunityCard extends StatelessWidget {
       case 'Hackathon': return Colors.orange;
       case 'Workshop': return Colors.green;
       case 'Scholarship': return Colors.purple;
-      case 'Startup': return const Color(0xFFE94560);
-      default: return Colors.grey;
+      case 'Startup': return AppColors.primary;
+      default: return AppColors.textSecondary;
     }
   }
 
@@ -107,15 +125,16 @@ class _OpportunityCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8, offset: const Offset(0, 4))],
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(kCardRadius),
+          border: Border.all(color: AppColors.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Image
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(kCardRadius)),
               child: Image.network(
                 opportunity.imageUrl,
                 height: 130,
@@ -123,8 +142,8 @@ class _OpportunityCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
                   height: 130,
-                  color: const Color(0xFF1A1A2E),
-                  child: const Icon(Icons.image, color: Colors.white54, size: 40),
+                  color: AppColors.surfaceVariant,
+                  child: const Icon(Icons.image, color: AppColors.textMuted, size: 40),
                 ),
               ),
             ),
@@ -133,6 +152,7 @@ class _OpportunityCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Type badge
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
@@ -145,19 +165,19 @@ class _OpportunityCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(opportunity.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1A1A2E))),
+                  Text(opportunity.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                   const SizedBox(height: 4),
-                  Text(opportunity.organizer, style: const TextStyle(color: Colors.grey, fontSize: 13)),
+                  Text(opportunity.organizer, style: const TextStyle(color: AppColors.textSecondary, fontSize: 13)),
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.calendar_today, size: 14, color: Colors.grey),
+                      const Icon(Icons.calendar_today, size: 14, color: AppColors.textMuted),
                       const SizedBox(width: 4),
-                      Text('Deadline: ${opportunity.deadline}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                      Text('Deadline: ${opportunity.deadline}', style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
                       const Spacer(),
-                      const Icon(Icons.location_on, size: 14, color: Colors.grey),
+                      const Icon(Icons.location_on, size: 14, color: AppColors.textMuted),
                       const SizedBox(width: 4),
-                      Text(opportunity.location, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                      Text(opportunity.location, style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
                     ],
                   ),
                 ],

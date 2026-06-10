@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'models/opportunity_model.dart';
+import '../../theme/app_theme.dart';
 
 class OpportunityApplyScreen extends StatefulWidget {
   final Opportunity opportunity;
@@ -27,9 +28,10 @@ class _OpportunityApplyScreenState extends State<OpportunityApplyScreen> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: const Text('Application Submitted! 🎉'),
-          content: Text('You have successfully applied for ${widget.opportunity.title}.'),
+          backgroundColor: AppColors.surface,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kCardRadius)),
+          title: const Text('Application Submitted! 🎉', style: TextStyle(color: AppColors.textPrimary)),
+          content: Text('You have successfully applied for ${widget.opportunity.title}.', style: const TextStyle(color: AppColors.textSecondary)),
           actions: [
             TextButton(
               onPressed: () {
@@ -37,7 +39,7 @@ class _OpportunityApplyScreenState extends State<OpportunityApplyScreen> {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
-              child: const Text('Done', style: TextStyle(color: Color(0xFFE94560))),
+              child: const Text('Done', style: TextStyle(color: AppColors.primary)),
             ),
           ],
         ),
@@ -48,11 +50,12 @@ class _OpportunityApplyScreenState extends State<OpportunityApplyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1A1A2E),
-        title: const Text('Apply', style: TextStyle(color: Colors.white)),
+        backgroundColor: AppColors.background,
+        title: const Text('Apply', style: TextStyle(color: AppColors.textPrimary)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -63,9 +66,9 @@ class _OpportunityApplyScreenState extends State<OpportunityApplyScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Applying for:', style: TextStyle(color: Colors.grey)),
+              const Text('Applying for:', style: TextStyle(color: AppColors.textMuted)),
               const SizedBox(height: 4),
-              Text(widget.opportunity.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1A2E))),
+              Text(widget.opportunity.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
               const SizedBox(height: 24),
               _buildField('Full Name', _nameController, 'Enter your full name'),
               const SizedBox(height: 16),
@@ -77,14 +80,9 @@ class _OpportunityApplyScreenState extends State<OpportunityApplyScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _isSubmitting ? null : _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE94560),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
                   child: _isSubmitting
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Submit Application', style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
+                      ? const CircularProgressIndicator(color: AppColors.onPrimary)
+                      : const Text('Submit Application'),
                 ),
               ),
             ],
@@ -98,20 +96,14 @@ class _OpportunityApplyScreenState extends State<OpportunityApplyScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+        Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.textPrimary)),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
           maxLines: maxLines,
+          style: const TextStyle(color: AppColors.textPrimary),
           keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: const TextStyle(color: Colors.grey),
-            filled: true,
-            fillColor: const Color(0xFFF5F5F5),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE94560))),
-          ),
+          decoration: InputDecoration(hintText: hint),
           validator: (value) {
             if (value == null || value.isEmpty) return 'This field is required';
             if (isEmail && !value.contains('@')) return 'Enter a valid email';
