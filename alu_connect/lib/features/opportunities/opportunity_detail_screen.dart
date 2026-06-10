@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'models/opportunity_model.dart';
 import 'opportunity_apply_screen.dart';
+import '../../theme/app_theme.dart';
 
 class OpportunityDetailScreen extends StatelessWidget {
   final Opportunity opportunity;
@@ -10,22 +11,22 @@ class OpportunityDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 200,
             pinned: true,
-            backgroundColor: const Color(0xFF1A1A2E),
+            backgroundColor: AppColors.background,
             flexibleSpace: FlexibleSpaceBar(
               background: Image.network(
                 opportunity.imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(color: const Color(0xFF1A1A2E)),
+                errorBuilder: (_, __, ___) => Container(color: AppColors.surfaceVariant),
               ),
             ),
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
               onPressed: () => Navigator.pop(context),
             ),
           ),
@@ -38,23 +39,23 @@ class OpportunityDetailScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE94560).withOpacity(0.15),
+                      color: AppColors.primary.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text(opportunity.type, style: const TextStyle(color: Color(0xFFE94560), fontWeight: FontWeight.bold)),
+                    child: Text(opportunity.type, style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(height: 12),
-                  Text(opportunity.title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF1A1A2E))),
+                  Text(opportunity.title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                   const SizedBox(height: 6),
-                  Text('By ${opportunity.organizer}', style: const TextStyle(color: Colors.grey)),
-                  const Divider(height: 30),
+                  Text('By ${opportunity.organizer}', style: const TextStyle(color: AppColors.textSecondary)),
+                  Divider(height: 30, color: AppColors.border),
                   _infoRow(Icons.calendar_today, 'Deadline', opportunity.deadline),
                   const SizedBox(height: 12),
                   _infoRow(Icons.location_on, 'Location', opportunity.location),
-                  const Divider(height: 30),
-                  const Text('About this Opportunity', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Divider(height: 30, color: AppColors.border),
+                  const Text('About this Opportunity', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                   const SizedBox(height: 10),
-                  Text(opportunity.description, style: const TextStyle(fontSize: 14, color: Colors.black87, height: 1.6)),
+                  Text(opportunity.description, style: const TextStyle(fontSize: 14, color: AppColors.textSecondary, height: 1.6)),
                   const SizedBox(height: 30),
                   SizedBox(
                     width: double.infinity,
@@ -63,12 +64,7 @@ class OpportunityDetailScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(builder: (_) => OpportunityApplyScreen(opportunity: opportunity)),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE94560),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                      child: const Text('Apply Now', style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
+                      child: const Text('Apply Now'),
                     ),
                   ),
                 ],
@@ -83,13 +79,13 @@ class OpportunityDetailScreen extends StatelessWidget {
   Widget _infoRow(IconData icon, String label, String value) {
     return Row(
       children: [
-        Icon(icon, color: const Color(0xFFE94560), size: 20),
+        Icon(icon, color: AppColors.primary, size: 20),
         const SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-            Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+            Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
+            Text(value, style: const TextStyle(fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
           ],
         ),
       ],
