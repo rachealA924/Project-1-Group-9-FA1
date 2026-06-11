@@ -14,13 +14,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
 
-  // ── Animation controllers ───────────────────────────────────
+  // Animation controllers
   late final AnimationController _logoController;
   late final AnimationController _textController;
   late final AnimationController _taglineController;
   late final AnimationController _barController;
 
-  // ── Animations ──────────────────────────────────────────────
+  //  Animations 
   late final Animation<double> _logoScale;
   late final Animation<double> _logoFade;
   late final Animation<double> _logoGlow;
@@ -104,7 +104,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     Navigator.pushReplacement(
       context,
-      isLoggedIn ? revealRoute(MainNavigation()) : fadeRoute(const LoginScreen()),
+      isLoggedIn ? revealRoute(const MainNavigation()) : fadeRoute(const LoginScreen()),
     );
   }
 
@@ -126,7 +126,7 @@ class _SplashScreenState extends State<SplashScreen>
       body: Stack(
         children: [
 
-          // ── Background radial glow ──────────────────────────
+          // Background radial glow
           AnimatedBuilder(
             animation: _logoGlow,
             builder: (_, __) => Positioned(
@@ -147,7 +147,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ),
 
-          // ── Centered content ────────────────────────────────
+          // Centered content 
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -218,7 +218,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ),
 
-          // ── Loading bar at bottom ───────────────────────────
+          //Loading bar at bottom
           Positioned(
             bottom: 60,
             left: 48,

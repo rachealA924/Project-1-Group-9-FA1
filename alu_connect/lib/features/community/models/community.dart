@@ -26,22 +26,17 @@ class Community {
   final String about;
   final String category;
   final int memberCount;
-
-  /// Stand-in for a cover image until real assets are wired up.
   final Color accentColor;
   final IconData icon;
-
   final List<String> tags;
   final List<CommunityEvent> events;
   final List<Announcement> announcements;
   final List<DiscussionPost> posts;
-
   bool isJoined;
   final bool isOfficial;
   final bool isPrivate;
 }
 
-/// An upcoming event shown on a community's detail page.
 class CommunityEvent {
   const CommunityEvent({
     required this.month,
@@ -51,14 +46,13 @@ class CommunityEvent {
     required this.time,
   });
 
-  final String month; // e.g. "DEC"
-  final String day; // e.g. "12"
+  final String month;
+  final String day;
   final String title;
   final String location;
   final String time;
 }
 
-/// A pinned announcement from an admin / faculty advisor.
 class Announcement {
   const Announcement({
     required this.author,
@@ -93,6 +87,7 @@ class DiscussionPost {
     this.likes = 0,
     this.comments = 0,
     this.verified = false,
+    this.imageUrl, // ← added: optional attached image
   });
 
   final String author;
@@ -102,16 +97,15 @@ class DiscussionPost {
   final int likes;
   final int comments;
   final bool verified;
+  final String? imageUrl; // ← added
 }
 
-/// A peer that can be added as an initial member when creating a community.
 class Peer {
   const Peer({required this.name, required this.detail});
   final String name;
   final String detail;
 }
 
-/// Shared helper: turn a full name into up-to-two-letter initials.
 String initialsOf(String name) {
   final parts = name.trim().split(RegExp(r'\s+'));
   if (parts.isEmpty || parts.first.isEmpty) return '?';

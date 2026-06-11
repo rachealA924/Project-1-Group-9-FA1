@@ -1,37 +1,24 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:alu_connect/features/home/splash_screen.dart';
+import 'package:alu_connect/features/home/home_screen.dart';
 import 'package:alu_connect/features/home/messages_screen.dart';
 import 'package:alu_connect/features/home/profile_screen.dart';
+import 'package:alu_connect/features/home/user_session.dart';
+import 'package:alu_connect/features/home/app_router.dart';
 import 'features/opportunities/opportunities_feed_screen.dart';
 import 'features/community/screens/communities_hub_screen.dart';
 import 'features/events/screens/event_discovery.dart';
 
-void main() {
-  runApp(ALUConnectApp());
-}
+void main() => runApp(ALUConnectApp());
 
 class ALUConnectApp extends StatelessWidget {
   const ALUConnectApp({super.key});
-=======
-import 'features/opportunities/opportunities_feed_screen.dart';
-import 'features/community/init.dart';
-import 'theme/app_theme.dart';
-
-void main() {
-  runApp(const AluConnectApp());
-}
-
-class AluConnectApp extends StatelessWidget {
-  const AluConnectApp({super.key});
->>>>>>> b3da45c2b1175c37879cf347d81f3230ee78d122
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ALU Connect+',
       debugShowCheckedModeBanner: false,
-<<<<<<< HEAD
       theme: ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF0D0F14),
@@ -45,105 +32,125 @@ class AluConnectApp extends StatelessWidget {
         ),
       ),
       home: SplashScreen(),
-=======
-      theme: buildAppTheme(),
-      home: const MainNavigation(),
->>>>>>> b3da45c2b1175c37879cf347d81f3230ee78d122
     );
   }
 }
 
 class MainNavigation extends StatefulWidget {
-  const MainNavigation({super.key});
+  final int initialIndex;
+  const MainNavigation({super.key, this.initialIndex = 0});
+
+  // FIX 1: jumpTo now has its closing brace
+  static void jumpTo(BuildContext context, int index) {
+    final state = context.findAncestorStateOfType<_MainNavigationState>();
+    state?.jumpTo(index);
+  } // ← was missing
 
   @override
   State<MainNavigation> createState() => _MainNavigationState();
 }
 
 class _MainNavigationState extends State<MainNavigation> {
-  int _currentIndex = 0;
+  late int _currentIndex;
+  final _session = UserSession();
 
+  // FIX 2: initState applies initialIndex so login always lands on Home
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialIndex;
+  }
+
+  // FIX 3: jumpTo method added to state so static call works
+  void jumpTo(int index) => setState(() => _currentIndex = index);
+
+  // FIX 4: HomeScreen is index 0, teammates' screens at 1 and 2
   final List<Widget> _screens = [
-    const CommunitiesHubScreen(),
-    const OpportunitiesFeedScreen(),
-<<<<<<< HEAD
-    const EventDiscoveryScreen(), 
-    const MessagesScreen(),
-    const ProfileScreen(),
-=======
->>>>>>> b3da45c2b1175c37879cf347d81f3230ee78d122
+    HomeScreen(),                 // 0 - Home
+    EventDiscoveryScreen(),       // 1 - Discover
+    CommunitiesHubScreen(),       // 2 - People
+    OpportunitiesFeedScreen(),    // 3 - Opportunities (see all from home)
+    MessagesScreen(),             // 4 - Messages
+    ProfileScreen(),              // 5 - Profile
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
-      body: IndexedStack(index: _currentIndex, children: _screens),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: const Color(0xFF0D0F14),
-          border: Border(top: BorderSide(color: Colors.white.withOpacity(0.06))),
+          border: Border(
+            top: BorderSide(color: Colors.white.withOpacity(0.06)),
+          ),
         ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (i) => setState(() => _currentIndex = i),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: const Color(0xFFF5C842),
-          unselectedItemColor: const Color(0xFF8A8D99),
-          selectedFontSize: 10,
-          unselectedFontSize: 10,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home_rounded), label: 'Home'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.explore_outlined), label: 'Discover'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.people_outline_rounded), label: 'People'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.chat_bubble_outline_rounded), label: 'Messages'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline_rounded), label: 'Profile'),
-          ],
+        child: ListenableBuilder(
+          listenable: _session,
+          builder: (_, __) => BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: (i) {
+              if (i == 4) _session.markMessagesRead();
+              setState(() => _currentIndex = i);
+            },
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: const Color(0xFFF5C842),
+            unselectedItemColor: const Color(0xFF8A8D99),
+            selectedFontSize: 10,
+            unselectedFontSize: 10,
+            items: [
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.home_rounded),
+                label: 'Home',
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.explore_outlined),
+                label: 'Discover',
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.people_outline_rounded),
+                label: 'People',
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.work_outline_rounded),
+                label: 'Opportunities',
+              ),
+              // Messages with unread badge
+              BottomNavigationBarItem(
+                icon: Stack(clipBehavior: Clip.none, children: [
+                  const Icon(Icons.chat_bubble_outline_rounded),
+                  if (_session.unreadMessages > 0)
+                    Positioned(
+                      top: -4, right: -4,
+                      child: Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFF5C842),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text('${_session.unreadMessages}',
+                          style: const TextStyle(
+                            color: Color(0xFF0D0F14),
+                            fontSize: 8,
+                            fontWeight: FontWeight.w700,
+                          )),
+                      ),
+                    ),
+                ]),
+                label: 'Messages',
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline_rounded),
+                label: 'Profile',
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
-}
-
-// Temporary placeholder until teammates' screens are merged in
-class _PlaceholderScreen extends StatelessWidget {
-  final String label;
-  const _PlaceholderScreen({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF0D0F14),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.construction_rounded,
-                color: const Color(0xFFF5C842).withOpacity(0.4), size: 48),
-            const SizedBox(height: 12),
-            Text('$label screen\ncoming from teammates',
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Color(0xFF8A8D99), fontSize: 13, height: 1.5)),
-          ],
-        ),
-=======
-      body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
-        selectedItemColor: const Color(0xFFE94560),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
-          BottomNavigationBarItem(icon: Icon(Icons.work_outline), label: 'Opportunities'),
-        ],
->>>>>>> b3da45c2b1175c37879cf347d81f3230ee78d122
       ),
     );
   }
